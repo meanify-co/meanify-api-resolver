@@ -146,16 +146,9 @@ class ApiResolverService
         }
         catch (\GuzzleHttp\Exception\RequestException $e)
         {
-            $status_code = $e->getStatusCode();
-
-            $original_body = new \stdClass();
-            $original_body->message     = $e->getMessage();
+            abort($e->getCode(), $e->getMessage());
         }
 
-        $response = [
-            'status_code' => $status_code,
-            'body'        => $original_body,
-        ];
-        return (object) $response;
+        return $original_body;
     }
 }
