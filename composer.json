@@ -1,0 +1,44 @@
+{
+  "name": "meanify-co/meanify-api-resolver",
+  "description": "",
+  "authors": [
+    {
+      "name": "Daniel Barcelos",
+      "email": "daniel@meanify.co"
+    }
+  ],
+  "keywords": [
+    "utils",
+    "helpers",
+    "log",
+    "php",
+    "laravel"
+  ],
+  "type": "library",
+  "license": "MIT",
+  "require": {
+    "php": "^8.0",
+    "guzzlehttp/guzzle": "^7.2"
+  },
+  "require-dev": {
+    "illuminate/support": "^10.0|^11.0",
+    "illuminate/console": "^11.44"
+  },
+  "autoload": {
+    "psr-4": {
+      "Meanify\\ApiResolver\\": "src/"
+    }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Meanify\\ApiResolver\\Providers\\MeanifyApiResolverServiceProvider"
+      ]
+    }
+  },
+  "scripts": {
+    "test": "phpunit"
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true
+}
