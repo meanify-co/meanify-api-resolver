@@ -10,6 +10,7 @@ class ApiResolverService
     protected $host;
     protected $api_key;
     protected $constant_headers;
+    protected $render_api_exception;
     public $METHOD_GET    = 'GET';
     public $METHOD_POST   = 'POST';
     public $METHOD_PUT    = 'PUT';
@@ -25,6 +26,7 @@ class ApiResolverService
         $this->host             = $host ?? config('meanify-api-resolver.host');
         $this->api_key          = $api_key ?? config('meanify-api-resolver.api_key');
         $this->constant_headers = $constant_headers ?? config('meanify-api-resolver.constant_headers');
+        $this->render_api_exception = config('meanify-api-resolver.render_api_exception');
 
         return $this;
     }
@@ -146,7 +148,35 @@ class ApiResolverService
         }
         catch (\GuzzleHttp\Exception\RequestException $e)
         {
-            abort($e->getCode(), $e->getMessage());
+            if(
+                $e->getCode() == 500
+                and str_contains($e->getMessage(),'Sfdump = window.Sfdump')
+                and $this->render_api_exception
+                and $e->hasResponse()
+            )
+            {
+                try
+                {
+                    if (str_contains($e->getResponse()->getHeaderLine('Content-Type'), 'text/debug'))
+                    {
+                        dd('DEBUG IN API', json_decode($e->getResponse()->getBody()->getContents()));
+                    }
+
+                    $responseException = $e->getResponse();
+
+                    var_dump((string) $e->getResponse()->getBody());
+
+                    exit;
+                }
+                catch (\Exception $renderExceptionFromApi)
+                {
+                    abort($e->getCode(), $e->getMessage());
+                }
+            }
+            else
+            {
+                abort($e->getCode(), $e->getMessage());
+            }
         }
 
         return $original_body;

@@ -6,6 +6,8 @@ return [
 
     'api_key' => env('MEANIFY_API_RESOLVER_API_KEY', null),
 
+    'render_api_exception' => env('MEANIFY_API_RESOLVER_RENDER_EXCEPTION', false),
+
     'constant_headers' => [
 
         'x-mfy-app-id'  => env('MEANIFY_API_RESOLVER_APP_ID', null),
