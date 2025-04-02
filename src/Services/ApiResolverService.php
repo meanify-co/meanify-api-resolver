@@ -105,6 +105,8 @@ class ApiResolverService
                 'Accept'                    => 'application/json',
                 'Authorization'             => $this->getAuthorization(),
                 'User-Agent'                => request()->header('User-Agent'),
+                'Origin'                    => request()->getSchemeAndHttpHost(),
+                'Referer'                   => request()->fullUrl(),      
                 'x-mfy-ip-address'          => request()->getClientIp(),
                 'x-mfy-user-token'          => $user_token,
             ]);
