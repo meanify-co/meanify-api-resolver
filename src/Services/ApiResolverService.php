@@ -177,7 +177,19 @@ class ApiResolverService
             }
             else
             {
-                abort($e->getCode(), $e->getMessage());
+                try
+                {
+                    $error_code  = $e->getCode();
+                    $error_message = $e->getMessage();
+
+                    $friendly_error_message = json_decode((string)$e->getResponse()->getBody();
+
+                    abort($error_code, $friendly_error_message);
+                }
+                catch (\Exception $errorOnRenderExceptionMessage)
+                {
+                    abort($error_code ?? $errorOnRenderExceptionMessage->getCode(), $error_message ?? $errorOnRenderExceptionMessage->getMessage());
+                }
             }
         }
 
