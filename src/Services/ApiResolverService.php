@@ -182,7 +182,7 @@ class ApiResolverService
                     $error_code  = $e->getCode();
                     $error_message = $e->getMessage();
 
-                    $friendly_error_message = json_decode((string)$e->getResponse()->getBody();
+                    $friendly_error_message = json_decode((string)$e->getResponse()->getBody())->message;
 
                     abort($error_code, $friendly_error_message);
                 }
